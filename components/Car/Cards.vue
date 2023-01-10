@@ -17,8 +17,8 @@
     // composables pour importer nos voitures
     const { cars } = useCars();
 
+    // composable provenant de Vueuse qui mélange useState() et LocalStorage.
     const favorite = useLocalStorage("favorite",{})
-
 
     // méthode qui est délenché lors de la reception de l'émit provenant du composant enfant Card autremnt dit quand on clic sur un coeur.
     // si on a click sur un coeur dont l'id est déjà dans l'objet c'est qu'on ne veut plus qu'il soit favoris et donc on le supprime.
@@ -27,7 +27,7 @@
     const handleFavorite = (id: number) => {
 
         if(id in favorite.value){
-            delete favorite.value[id]
+            delete favorite.value[id as keyof typeof favorite.value]
         }
         else{
             

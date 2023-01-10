@@ -18,3 +18,23 @@ export type Cars ={
 export type Makes = {
     makes:string[];
 }
+
+export type Listing = {
+
+    id: string,
+    name: string,
+    make: string,
+    model: string,
+    price: string,
+    year: number,
+    city: string,
+    url: string
+    seats: number,
+    miles: string,
+    features: string,
+    description: string
+}
+
+export type Listings= {
+    listings:Listing[]
+}

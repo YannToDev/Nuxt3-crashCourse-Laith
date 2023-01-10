@@ -4,7 +4,9 @@
     <div class="w-full">
         <div 
             
-            class=" relative shadow border w-full h-screen md:h-[200px] mb-5 overflow-hidden">
+            class=" relative shadow border w-full h-screen md:h-[200px] mb-5 overflow-hidden"
+            ref="target" :style="{transform: cardTransform, transition :'transform 0.25s ease-out'}"    
+        >
             
             <img
                 @click="emit('favor',car.id)" 
@@ -44,8 +46,24 @@
 
     import  heartFilled from "@/assets/heartFilled.png"
     import  heartOutline from "@/assets/heartOutline.png";
-
     import { Car } from '~~/types/carsType';
+
+    import { useMouseInElement } from '@vueuse/core';
+
+    const target = ref(null);
+    const { elementX, elementY, elementWidth, elementHeight, isOutside } = useMouseInElement(target);
+
+    const cardTransform = computed(() => {
+
+        const MAX_ROTATION = 8;
+
+        const rx = (MAX_ROTATION / 2 - (elementY.value / elementHeight.value) * MAX_ROTATION).toFixed(2);
+        const ry = ((elementX.value / elementWidth.value) * MAX_ROTATION - MAX_ROTATION / 2).toFixed(2)
+
+        return isOutside.value ? '' : `perspective(${elementWidth.value}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+
+
 
     // On défini le type de la props que va recevoir le composant. 
     // Ici il s'agit de notre interface Car, autrement dit un objet de type Car
@@ -56,7 +74,7 @@
     }
 
     const props = defineProps<Props>();
-    // console.log(props);
+
 
     // typage de l'émit, ici on a un emit qui s'appel 'favor' et qui va émettre un number en argument
     const emit = defineEmits<{ 
